@@ -43,6 +43,7 @@ public class PropertyServiceImpl implements PropertyService{
 			throw new BusinessException(errors);
 			
 		} else {
+			
 			PropertyEntity entity = converter.dtoToEntity(property);
 			entity.setUserEntity(o.get());
 			repository.save(entity);
