@@ -46,9 +46,10 @@ public class PropertyServiceImpl implements PropertyService{
 			
 			PropertyEntity entity = converter.dtoToEntity(property);
 			entity.setUserEntity(o.get());
-			repository.save(entity);
 			
-			PropertyDto dto = converter.entityToDto(entity);
+			PropertyEntity savedProperty = repository.save(entity);
+			PropertyDto dto = converter.entityToDto(savedProperty);
+			
 			return dto;
 		}
 		

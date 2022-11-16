@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,6 +18,8 @@ import com.naveen.propertymanagement.converter.PropertyConverter;
 import com.naveen.propertymanagement.dto.PropertyDto;
 import com.naveen.propertymanagement.entity.PropertyEntity;
 import com.naveen.propertymanagement.entity.UserEntity;
+import com.naveen.propertymanagement.excepetion.BusinessException;
+import com.naveen.propertymanagement.excepetion.ErrorModel;
 import com.naveen.propertymanagement.repository.PropertyRepository;
 import com.naveen.propertymanagement.repository.UserRepository;
 
@@ -34,13 +37,14 @@ public class PropertyServiceImplTest {
 	private UserRepository userRepository;
 
 	@Test
-	@Disabled
-	void saveProperty_2() {
+	//@Disabled
+	void savePropertyTest() {
 
 		// PropertyDto to pass into the service save function
 		PropertyDto propertyDto = new PropertyDto();
 		propertyDto.setTitle("2BHK in kukatpally");
 		propertyDto.setUserId(1L);
+		propertyDto.setId(1L);
 
 		// UserEntity to check if the user exists
 		UserEntity userEntity = new UserEntity();
@@ -100,6 +104,23 @@ public class PropertyServiceImplTest {
 		
 	}
 	
-	
+	@Test
+	@DisplayName("Testing save property negative scenario")
+	void savePropertyExceptionTest() {
+		
+		//PropertyDto to pass into the service save function
+		PropertyDto propertyDto = new PropertyDto();
+		propertyDto.setTitle("2BHK in kukatpally");
+		propertyDto.setUserId(1L);
+		
+		Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+		
+		BusinessException thrownException = Assertions.assertThrows(BusinessException.class, ()->{
+			PropertyDto savedPropertyDto = propertyService.saveProperty(propertyDto);
+		});
+		
+		Assertions.assertEquals("USER_DOESNT_EXIST", thrownException.getErrors().get(0).getErrorCode());
+		
+	}
 
 }

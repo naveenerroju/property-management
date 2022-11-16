@@ -67,6 +67,8 @@ class PropertyControllerTest {
 		Assertions.assertNotNull(responseEntity.getBody());
 	}
 	
+	
+	
 
 
 }
