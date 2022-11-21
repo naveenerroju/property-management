@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -22,6 +24,8 @@ class PropertyControllerTest {
 	@InjectMocks private PropertyController controller;
 	
 	@Mock private PropertyServiceImpl propertyService;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Test
 	@DisplayName("saving a property in success scenario")
@@ -63,12 +67,51 @@ class PropertyControllerTest {
 		controller.getProperty(1L);
 		ResponseEntity<PropertyDto> responseEntity = controller.getProperty(1L);
 		
+		logger.debug(responseEntity.getBody().toString());
+		
 		Assertions.assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
 		Assertions.assertNotNull(responseEntity.getBody());
 	}
 	
 	
+	@Test
+	@DisplayName("Update property by Id with success scenario")
+	void updatePropertyTest() {
+		
+		PropertyDto propertyDto = new PropertyDto();
+		propertyDto.setTitle("2BHK in kukatpally");
+		propertyDto.setUserId(1L);
+		
+		Mockito.when(propertyService.updateProperty(Mockito.anyLong(), Mockito.any())).thenReturn(propertyDto);
+		
+		ResponseEntity<PropertyDto> responseEntity = controller.updateProperty(1L, propertyDto);
+		
+		Assertions.assertEquals(responseEntity.getStatusCodeValue(), 202);
+		Assertions.assertNotNull(responseEntity.getBody());
+		
+	}
 	
+
+	
+	@Test
+	@DisplayName("Update description property by Id with success scenario")
+	void updateDescPropertyTest() {
+		
+		PropertyDto propertyDto = new PropertyDto();
+		propertyDto.setTitle("2BHK in kukatpally");
+		propertyDto.setUserId(1L);
+		propertyDto.setDescription("property has all government approvals");
+		
+		Mockito.when(propertyService.updateProperty(Mockito.anyLong(), Mockito.any())).thenReturn(propertyDto);
+		ResponseEntity<PropertyDto> responseEntity = controller.updateDescription(1L, propertyDto.getDescription());
+		
+		Assertions.assertEquals(responseEntity.getStatusCodeValue(), 202);
+		
+		//Assertions.assertNotNull(responseEntity.getBody());
+		
+		Assertions.assertEquals("property has all government approvals", responseEntity.getBody().getDescription());
+
+	}
 
 
 }
