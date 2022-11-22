@@ -63,6 +63,11 @@ public class PropertyEntity {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	@Override
+	public String toString() {
+		return "PropertyEntity [id=" + id + ", title=" + title + ", userEntity=" + userEntity + ", description="
+				+ description + ", price=" + price + "]";
+	}
 	
 	
 

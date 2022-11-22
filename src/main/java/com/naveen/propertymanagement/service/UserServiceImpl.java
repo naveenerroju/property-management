@@ -1,5 +1,9 @@
 package com.naveen.propertymanagement.service;
 
+import java.util.Optional;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +25,15 @@ public class UserServiceImpl implements UserService{
 		UserDto response = converter.entityToDto(entity);
 		return response;
 	}
+	
+	public boolean authenticate(Long id) {
+			
+		Optional<UserEntity> o= repository.findById(id);
+		if(o.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
 
 }

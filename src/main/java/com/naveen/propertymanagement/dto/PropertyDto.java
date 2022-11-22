@@ -44,5 +44,12 @@ public class PropertyDto {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	@Override
+	public String toString() {
+		return "PropertyDto [id=" + id + ", title=" + title + ", userId=" + userId + ", description=" + description
+				+ ", price=" + price + "]";
+	}
+	
+	
 
 }
